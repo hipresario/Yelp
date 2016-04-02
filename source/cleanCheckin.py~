@@ -1,0 +1,31 @@
+import os
+import csv
+
+currentpath = os.path.dirname(os.path.abspath(__file__))
+
+ippath = 
+ 
+def readCSVFile(url):
+    infile = csv.DictReader(open(url,'rb'), delimiter=',')
+    return infile
+ 
+def writeCSVFile(url):
+    fieldnames = ['Salary','ExpYear','Ht','MP','FG','PTS']
+    infile = csv.DictWriter(open(url,'wb'), fieldnames=fieldnames)
+    return infile
+ 
+reader = readCSVFile("q1.csv")
+writer = writeCSVFile("q1+noseason.csv")
+ 
+writer.writeheader()
+ 
+for row in reader:
+    #print row['Ht']
+    height = row['Ht'].split('-')
+    result = int(round(float(height[0])*30.48 + float(height[1])*2.54, 0))
+    season = row['Season'].split("-")[0]
+    year = int(season) - int(row['Since']) + 1
+    if (year >= 0):
+        print result
+        writer.writerow({'Salary': row['Salary'], 'ExpYear': str(year), 'Ht': str(result), 'MP': row['MP'], 'FG': row['FG'], 'PTS': row['PTS']})
+        #writer2.writerow({'Salary': row['Salary'], 'Season': season, 'ExpYear': str(year), 'Ht': str(result), 'FG': row['FG'], 'PTS': row['PTS']})
